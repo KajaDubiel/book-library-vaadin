@@ -1,6 +1,7 @@
 package com.vaadin.simpleexercise.library.book;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "BOOK")
@@ -22,6 +23,7 @@ public class Book {
 
     @Id
     @GeneratedValue
+    @NotNull
     public long getId() {
         return id;
     }

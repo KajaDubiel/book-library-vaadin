@@ -1,6 +1,9 @@
 package com.vaadin.simpleexercise.library.book;
 
+import org.springframework.data.repository.NoRepositoryBean;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +23,7 @@ public class Library {
 
     @Id
     @GeneratedValue
+    @NotNull
     public long getId() {
         return id;
     }
@@ -48,5 +52,12 @@ public class Library {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Library{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }

@@ -42,6 +42,11 @@ public class LibraryDaoTestSuite {
         library.getBooks().add(book3);
         library.getBooks().add(book4);
 
+        book1.setLibrary(library);
+        book2.setLibrary(library);
+        book3.setLibrary(library);
+        book4.setLibrary(library);
+
         //When
         libraryDao.save(library);
     }

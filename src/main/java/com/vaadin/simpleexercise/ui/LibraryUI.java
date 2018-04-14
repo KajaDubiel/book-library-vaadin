@@ -2,52 +2,76 @@ package com.vaadin.simpleexercise.ui;
 
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.simpleexercise.library.book.Book;
-import com.vaadin.simpleexercise.library.book.BookDao;
 import com.vaadin.simpleexercise.library.book.Library;
 import com.vaadin.simpleexercise.library.book.LibraryDao;
+import com.vaadin.simpleexercise.service.LibraryService;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @SpringUI
 public class LibraryUI extends UI {
-    private VerticalLayout mainLayout;
-    private Grid<Book> grid;
-    private BookDao bookDao;
-    private LibraryDao libraryDao;
+    private HorizontalLayout mainLayout;
+    private Grid<Book> grid = new Grid(Book.class);
+    @Autowired
+    private LibraryService libraryService;
+    private VerticalLayout verticalLayout = new VerticalLayout();
+    //private MyView myView;
+    //@Autowired
+   // private LibraryDao libraryDao;
+   // private Library library = new Library();
+    BookForm bookForm = new BookForm();
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         setMainLayout();
         setHeader();
         loadBooks();
+        addBookForm();
+
+       // gridLayout.loadGrid();
+        //myView = new MyView();
+        //mainLayout.addComponent(myView);
     }
 
     public void setMainLayout(){
-        mainLayout = new VerticalLayout();
+        mainLayout = new HorizontalLayout();
         setContent(mainLayout);
+
     }
 
     public void setHeader(){
         Label header = new Label("Library");
         header.setStyleName(ValoTheme.LABEL_H1);
-        mainLayout.addComponent(header);
-        mainLayout.setComponentAlignment(header, Alignment.TOP_CENTER);
+        verticalLayout.addComponent(header);
+        mainLayout.addComponent(verticalLayout);
+        verticalLayout.setComponentAlignment(header, Alignment.TOP_CENTER);
         header.addStyleName(ValoTheme.LABEL_H1);
     }
 
     private void loadBooks() {
         grid = new Grid<>(Book.class);
-        mainLayout.addComponent(grid);
-        mainLayout.setComponentAlignment(grid, Alignment.TOP_CENTER);
-        List<Book> books;
-        libraryDao.findAll().forEach(l -> l.getBooks());//????????????!?!?!?!?!?
-        //List<Book> books = new ArrayList<>();
-       // bookDao.findAll().forEach(b -> books.add(b));
-        //grid.setItems(books);
-        mainLayout.addComponent(grid);
+        verticalLayout.addComponent(grid);
+        List<Book> books = libraryService.getAllBooks();
+        grid.setItems(books);
+        grid.removeAllColumns();
+        grid.addColumn(Book::getTitle).setCaption("TITLE");
+        grid.addColumn(Book::getAuthor).setCaption("AUTHOR");
+        grid.addColumn(Book::getYear).setCaption("YEAR");
+
+        mainLayout.addComponent(verticalLayout);
+        //mainLayout.setComponentAlignment(grid, Alignment.TOP_CENTER);
+    }
+
+    public void addBookForm(){
+        mainLayout.addComponent(bookForm);
+        mainLayout.setComponentAlignment(bookForm, Alignment.MIDDLE_CENTER);
+    }
+
+    public void updateGrid(){
+
     }
 
 
