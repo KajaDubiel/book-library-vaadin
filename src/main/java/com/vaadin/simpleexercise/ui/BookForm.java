@@ -9,10 +9,14 @@ import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @UIScope
-@SpringComponent
+@Component
 public class BookForm extends CustomComponent {
+
+    @Autowired
+    LibraryService libraryService;
 
     Layout layout;
     HorizontalLayout buttons = new HorizontalLayout();
@@ -23,11 +27,8 @@ public class BookForm extends CustomComponent {
     Button addBook;
     Button deleteBook;
     Binder<Book> binder = new Binder<>(Book.class);
-    @Autowired
-    LibraryService libraryService;
-    //LibraryService libraryService = LibraryService.getInstance();
 
-    public BookForm(){
+    public BookForm() {
         createMainLayout();
         createHeader();
         createTextFields();
@@ -36,12 +37,12 @@ public class BookForm extends CustomComponent {
 
     }
 
-    public void createMainLayout(){
+    public void createMainLayout() {
         layout = new VerticalLayout();
         setCompositionRoot(layout);
     }
 
-    public void createTextFields(){
+    public void createTextFields() {
         title = new TextField("TITLE");
         author = new TextField("AUTHOR");
         year = new TextField("YEAR");
@@ -50,26 +51,30 @@ public class BookForm extends CustomComponent {
         layout.addComponent(year);
     }
 
-    public void createHeader(){
+    public void createHeader() {
         header = new Label("Enter new book");
         layout.addComponent(header);
         header.addStyleName(ValoTheme.LABEL_H2);
     }
 
-    public void createButtonAddBook(){
+    public void createButtonAddBook() {
         addBook = new Button("Add");
         buttons.addComponent(addBook);
         layout.addComponent(buttons);
 
-        binder.forField(year).withConverter(new StringToIntegerConverter("Must enter a number")).bind(Book::getYear, Book::setYear);
+        binder.forField(year).withConverter(new StringToIntegerConverter("Must enter a year")).bind(Book::getYear, Book::setYear);
         binder.bindInstanceFields(this);
+
         /*addBook.addClickListener(e -> binder.bindInstanceFields(this));
         binder.forField(year).withConverter(new StringToIntegerConverter("Must enter a number")).bind(Book::getYear, Book::setYear);*/
 
-        addBook.addClickListener(e-> libraryService.saveBook(binder.getBean()));
+        //Book book = new Book("Sample book", "Sample author", 1876);
+        //addBook.addClickListener(e-> libraryService.saveBook(book));
+        Notification notification = new Notification("Bean: " + binder.getBean());
+        addBook.addClickListener(e -> notification.show("tah" + binder.getBean()));
     }
 
-    public void createButtonDeleteBook(){
+    public void createButtonDeleteBook() {
         deleteBook = new Button("Delete");
         buttons.addComponent(deleteBook);
         layout.addComponent(buttons);

@@ -18,14 +18,14 @@ public class LibraryService {
     private LibraryDao libraryDao;
     private static LibraryService libraryServiceInstance;
 
-    private LibraryService(){
+    private LibraryService() {
 
     }
 
-    public static LibraryService getInstance(){
-        if(libraryServiceInstance == null){
-            synchronized (LibraryService.class){
-                if(libraryServiceInstance == null){
+    public static LibraryService getInstance() {
+        if (libraryServiceInstance == null) {
+            synchronized (LibraryService.class) {
+                if (libraryServiceInstance == null) {
                     libraryServiceInstance = new LibraryService();
                 }
             }
@@ -33,17 +33,18 @@ public class LibraryService {
         return libraryServiceInstance;
     }
 
-    public void saveBook(Book book){
-       // bookDao.save(book);
+    public void saveBook(Book book) {
         libraryDao.findAll().forEach(l -> l.getBooks().add(book));
+        book.setLibrary(libraryDao.findOne(1L));
+        bookDao.save(book);
     }
 
-    public List<Book> getAllBooks(){
+    public List<Book> getAllBooks() {
         /*List<Book> booksList = new ArrayList<>();
         bookDao.findAll().forEach(b -> booksList.add(b));
         return booksList;*/
         List<Book> bookList = new ArrayList<>();
-        libraryDao.findAll().forEach(l -> l.getBooks().forEach(b-> bookList.add(b)));
+        libraryDao.findAll().forEach(l -> l.getBooks().forEach(b -> bookList.add(b)));
         return bookList;
     }
 
