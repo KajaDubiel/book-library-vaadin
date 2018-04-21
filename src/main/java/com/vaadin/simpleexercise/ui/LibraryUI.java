@@ -1,40 +1,31 @@
 package com.vaadin.simpleexercise.ui;
 
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.simpleexercise.library.book.Book;
-import com.vaadin.simpleexercise.library.book.Library;
-import com.vaadin.simpleexercise.library.book.LibraryDao;
-import com.vaadin.simpleexercise.service.LibraryService;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
-import java.util.List;
 
 @SpringUI
 public class LibraryUI extends UI {
-    @Autowired
-    private LibraryService libraryService;
 
     @Autowired
     private BookForm bookForm;
+
+    @Autowired
+    private GridLayout gridLayout;
+
     private HorizontalLayout mainLayout;
-    private Grid<Book> grid = new Grid(Book.class);
     private VerticalLayout verticalLayout = new VerticalLayout();
 
-    //BookForm bookForm = new BookForm();
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         setMainLayout();
         setHeader();
         loadBooks();
         addBookForm();
-
-        // gridLayout.loadGrid();
-        //myView = new MyView();
-        //mainLayout.addComponent(myView);
     }
 
     public void setMainLayout() {
@@ -52,29 +43,15 @@ public class LibraryUI extends UI {
         header.addStyleName(ValoTheme.LABEL_H1);
     }
 
-    private void loadBooks() {
-        grid = new Grid<>(Book.class);
-        verticalLayout.addComponent(grid);
-        List<Book> books = libraryService.getAllBooks();
-        grid.setItems(books);
-        grid.removeAllColumns();
-        grid.addColumn(Book::getTitle).setCaption("TITLE");
-        grid.addColumn(Book::getAuthor).setCaption("AUTHOR");
-        grid.addColumn(Book::getYear).setCaption("YEAR");
 
-        //mainLayout.setComponentAlignment(grid, Alignment.TOP_CENTER);
-        mainLayout.addComponent(verticalLayout);
-
+    public void loadBooks() {
+        verticalLayout.addComponent(gridLayout);
+        verticalLayout.setMargin(new MarginInfo(false, true, false, true));
     }
 
     public void addBookForm() {
         mainLayout.addComponent(bookForm);
         mainLayout.setComponentAlignment(bookForm, Alignment.MIDDLE_CENTER);
     }
-
-    public void updateGrid() {
-
-    }
-
 
 }

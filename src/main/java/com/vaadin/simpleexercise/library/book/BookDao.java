@@ -8,7 +8,7 @@ import java.util.List;
 
 @Transactional
 @Repository
-public interface BookDao extends CrudRepository<Book, Long>{
-    //List<Book> getAll();
+public interface BookDao extends CrudRepository<Book, Long> {
+    void deleteById(long id);
 
 }

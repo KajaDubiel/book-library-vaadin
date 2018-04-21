@@ -16,7 +16,7 @@ public class BookDaoTestSuite {
     BookDao bookDao;
 
     @Test
-    public void addBooks(){
+    public void testAddBooks() {
         //Given
         Book book1 = new Book("W pustyni i w puszczy", "Henryk Sienkiewicz", 1988);
         Book book2 = new Book("Pan Tadeusz", "Adam Mickiewicz", 1973);
@@ -32,5 +32,16 @@ public class BookDaoTestSuite {
         bookDao.delete(book2);
         bookDao.delete(book3);
         bookDao.delete(book4);
+    }
+
+    @Test
+    public void testDeleteBookByID() {
+        //Given
+        Book book1 = new Book("Jakas ksiazka", "Jakis autor", 1978);
+        bookDao.save(book1);
+        long id = book1.getId();
+        //When
+        bookDao.deleteById(id);
+        //Then
     }
 }

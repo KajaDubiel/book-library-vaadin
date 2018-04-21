@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface LibraryDao extends CrudRepository<Library, Long> {
     //void save(List<Book> books);
+    void deleteById(long id);
 }

@@ -4,6 +4,7 @@ import com.vaadin.simpleexercise.library.book.Book;
 import com.vaadin.simpleexercise.library.book.BookDao;
 import com.vaadin.simpleexercise.library.book.Library;
 import com.vaadin.simpleexercise.library.book.LibraryDao;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class LibraryDaoTestSuite {
     BookDao bookDao;
 
     @Test
-    public void addBookToLibrary(){
+    public void addBookToLibrary() {
         //Given
         Book book1 = new Book("W pustyni i w puszczy", "Henryk Sienkiewicz", 1988);
         Book book2 = new Book("Pan Tadeusz", "Adam Mickiewicz", 1973);
@@ -50,4 +51,5 @@ public class LibraryDaoTestSuite {
         //When
         libraryDao.save(library);
     }
+
 }
